@@ -27,7 +27,9 @@ contract ERC20 {
       // 返回_spender仍然被允许从_owner提取的金额。
       function allowance(address _owner, address _spender) constant returns (uint remaining);
       
+      // 从一个地址转移到另一个地址的token转移的细节
       event Transfer(address indexed _from, address indexed _to, uint _value);
+      // 从一个地址许可转移token到另一个地址的细节
       event Approval(address indexed _owner, address indexed _spender, uint _value);
     }
     

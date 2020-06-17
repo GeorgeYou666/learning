@@ -41,3 +41,5 @@ approve是授权第三方（比如某个服务合约）从发送者账户转移�
     B账户想用这100个ETH中的10个ETH给C账户，调用transferFrom(A, C, 10)
 
     调用allowance(A, B)可以查看B账户还能够调用A账户多少个token
+
+相关链接：https://mp.weixin.qq.com/s/foM1QWvsqGTdHxHTmjczsw

@@ -1,0 +1,38 @@
+pragma solidity ^0.4.16;
+ 
+/**
+以太猫使用的ERC721的合约标准
+ */
+contract ERC721 {
+    // Required method
+    function totalSupply() public constant returns (uint256 totalSupply);
+    function balanceOf(address _owner) public constant returns (uint256 balance);
+    /**
+    根据代币Id查询代币持有者
+     */
+    function ownerOf(uint256 _tokenId) public constant returns (address _owner);
+    function transfer(address _to, uint256 _tokenId) public;
+    function approve(address _to, uint256 _tokenId) public;
+    /**
+    在Approve 允许的条件下, 交易方msg.sender 调用该函数可以指定_tokenId的代币从他人那转至自己名下
+    类似于ERC20的 transferFrom
+     */
+    function takeOwnership(uint256 _tokenId) public;
+ 
+    // Optional method
+    function name() public constant returns (string name);
+    function symbol() public constant returns (string symbol);
+    /**
+    根据持有者和索引查询所持有的代币
+     */
+    function tokenOfOwnerByIndex(address _owner, uint256 _index) public constant returns (uint tokenId);
+    /**
+    查看代币的元数据
+    根据代币Id查询到元数据对应的URL, 里面包含了 代币名称,图像和描述等
+     */
+    function tokenMetadata(uint256 _tokenId) public constant returns (string infoUrl);
+ 
+    // Events
+    event Transfer(address indexed _from, address indexed _to, uint256 _tokenId);
+    event Approval(address indexed _owner, address indexed _approved, uint256 _tokenId);
+}

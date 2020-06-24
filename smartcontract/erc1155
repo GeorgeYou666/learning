@@ -1,0 +1,96 @@
+pragma solidity ^0.4.16;
+ 
+/**
+针对 可替代token的
+ 
+https://github.com/ethereum/EIPs/issues/1155
+ */
+contract ERC1155 {
+    // Events
+    event Approval(address indexed _owner, address indexed _spender, uint256 indexed _itemId, uint256 _value);
+    event Transfer(address indexed _from, address indexed _to, uint256 indexed _itemId, uint256 _value);
+ 
+    // Required Functions
+ 
+    /**
+    【两个方法一个处理单个的一个批量处理】 【请参照 ERC20的transfer函数】
+    将每个itemId[]的数量转移到指定的地址。
+    每个参数数组应该是相同的长度，每个索引都是相关的。
+    必须触发 Transfer事件
+    itemId 可以看做是某个特定的tokenId
+     */
+    function transfer(address _to, uint256 _itemId, uint256 _value) external;
+    function batchTransfer(address _to, uint256[] _itemIds, uint256[] _values) external;
+ 
+    /**
+    【两个方法一个处理单个的一个批量处理】 【请参照 ERC20的transferFrom函数】
+    将每一个itemId[]的数量从一个或多个地址转移到指定地址。
+    每个参数数组应该是相同的长度，每个索引都是相关的
+    必须触发 Transfer事件
+    itemId 可以看做是某个特定的tokenId
+     */
+    function transferFrom(address _from, address _to, uint256 _itemId, uint256 _value) external;
+    function batchTransferFrom(address _from, address _to, uint256[] _itemIds, uint256[] _values) external;
+    
+    /**
+    【两个方法一个处理单个的一个批量处理】 【请参照 ERC20的approve函数】
+    批准一个帐户可以替代表另一个帐户（使用转账）转移最大数量的多个itemId数目
+    必须触发 Approval事件
+     */
+    function approve(address _spender, uint256 _itemId, uint256 _value) external;
+    function batchApprove(address _spender, uint256[] _itemIds,  uint256[] _values) external;
+    
+    /**
+    增加一个或多个itemId的余量，而不需要重置为0 【及变更approve函数指定的允许转移量？？】
+    必须触发 Approval事件
+     */
+    function increaseApproval(address _spender, uint256 _itemId,  uint256 _addedValue) external;
+    function batchIncreaseApproval(address _spender, uint256[] _itemIds,  uint256[] _addedValues) external;
+    
+    /**
+    减少一个或多个itemId的余量，而不需要重置为0
+    必须触发 Approval事件
+     */
+    function decreaseApproval(address _spender, uint256 _itemId,  uint256 _subtractedValue) external;
+    function batchDecreaseApproval(address _spender, uint256[] _itemIds,  uint256[] _subtractedValues) external;
+ 
+    // Required View Functions
+    function totalSupply(uint256 _itemId) external view returns (uint256);
+    /**
+    根据对应的tokenId查看余额
+     */
+    function balanceOf(uint256 _itemId, address _owner) external view returns (uint256);
+    /**
+    根据对应的tokenId及拥有者及代替拥有者花钱者(注意 钱还是话拥有者的,只是拥有者给予某些权力给 第三者可以挪用她的部分资金) 具体参照ERC20 自明
+     */
+    function allowance(uint256 _itemId, address _owner, address _spender) external view returns (uint256);
+ 
+    // Optional View Functions
+    function name(uint256 _itemId) external view returns (string);
+    function symbol(uint256 _itemId) external view returns (string);
+    function decimals(uint256 _itemId) external view returns (uint8);
+}
+ 
+/**
+针对不可替代token的拓展 
+ */
+contract ERC1155NonFungible {
+    // Optional Functions for Non-Fungible Items
+    /**
+    For NFTs, this returns the owner of a specific _itemId.
+    在【 Non-Fungible Items】，返回当前tokenId 所属者 【参照ERC721】
+     */
+    function ownerOf(uint256 _itemId) external view returns (address);
+    /**
+    返回当前tokenId的描述的URL 【参照ERC721】
+     */
+    function itemURI(uint256 _itemId) external view returns (string);
+    /**
+    列举可用的Non-Fungible Items
+     */
+    function itemByIndex(uint256 _itemId, uint128 _index) external view returns (uint256);
+    /**
+    列举分配给所有者的Non-Fungible Items
+     */
+    function itemOfOwnerByIndex(uint256 _itemId, address _owner, uint128 _index) external view returns (uint256);
+}
